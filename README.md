@@ -1,7 +1,7 @@
 # Burger Builder
 This is a project of burger builder app. Database is being handled by Firebase. The main focus was to improve JS, React and Firebase skills.
 ## Try the project
-[https://krywa5.github.io/burger-builder](Click here)
+[Click here](https://krywa5.github.io/burger-builder)
 ## Technologies used
 * HTML
 * CSS MODULES
