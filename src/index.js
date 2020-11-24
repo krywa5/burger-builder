@@ -10,8 +10,6 @@ import reducer from './store/reducer';
 
 const store = createStore(reducer);
 
-// testowy komentarz aby zobaczyć zmianę
-
 const app = (
     <Provider store={store}>
         <BrowserRouter basename={process.env.PUBLIC_URL}>
