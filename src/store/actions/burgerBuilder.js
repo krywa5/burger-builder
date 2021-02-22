@@ -1,5 +1,4 @@
 import axios from "../../axios-orders";
-import { firebaseDBUrl } from "../../routes/routes.external";
 import * as actionTypes from "./actionsTypes";
 
 // kreatory akcji zwracają całą akcje
@@ -33,7 +32,7 @@ export const fetchIngredientsFailed = () => {
 export const initIngredients = () => {
   return (dispatch) => {
     axios
-      .get(`${firebaseDBUrl}/ingredients.json`)
+      .get(`/ingredients.json`)
       .then((response) => {
         dispatch(setIngredients(response.data));
       })

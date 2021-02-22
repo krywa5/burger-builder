@@ -1,11 +1,12 @@
-import React from "react";
-import { Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "./ContactData/ContactData";
+import * as actions from "../../store/actions";
 
-const Checkout = ({ history, ings, match }) => {
+const Checkout = ({ history, ings, match, onInitPurchase, purchased }) => {
   const checkoutCancelledHandler = () => {
     // cofa do poprzedniego URL
     history.goBack();
@@ -15,6 +16,18 @@ const Checkout = ({ history, ings, match }) => {
     // przekieruje do konkretnego URL
     history.replace("/checkout/contact-data");
   };
+
+  if (!ings) {
+    return <Redirect to="/" />;
+  }
+
+  if (purchased) {
+    return <Redirect to="/" />;
+  }
+
+  useEffect(() => {
+    // onInitPurchase();
+  }, []);
 
   return (
     <div>
@@ -30,7 +43,8 @@ const Checkout = ({ history, ings, match }) => {
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingredients,
+    ings: state.burgerBuilder.ingredients,
+    purchased: state.order.purchased,
   };
 };
 
