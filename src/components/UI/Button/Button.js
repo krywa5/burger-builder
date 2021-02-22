@@ -1,14 +1,17 @@
-import React from 'react';
-import classes from './Button.module.css';
+import React from "react";
+import classes from "./Button.module.css";
 
-const button = (props) => {
-    return (
-        <button
-            disabled={props.disabled}
-            // sposób na dynamiczne zmienianie nazwy klasy przycisku
-            className={[classes.Button, classes[props.btnType]].join(' ')}
-            onClick={props.clicked}>{props.children}</button>
-    );
-}
+const Button = ({ disabled, btnType, clicked, children }) => {
+  return (
+    <button
+      disabled={disabled}
+      // sposób na dynamiczne zmienianie nazwy klasy przycisku
+      className={[classes.Button, classes[btnType]].join(" ")}
+      onClick={clicked}
+    >
+      {children}
+    </button>
+  );
+};
 
-export default button;
+export default Button;

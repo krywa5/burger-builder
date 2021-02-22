@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../../axios-orders";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import Order from "../../components/Order/Order";
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -29,13 +30,17 @@ const Orders = () => {
 
   return (
     <div>
-      {orders.map((order) => (
-        <Order
-          key={order.id}
-          ingredients={order.ingredients}
-          price={order.price}
-        />
-      ))}
+      {loading ? (
+        <Spinner />
+      ) : (
+        orders.map((order) => (
+          <Order
+            key={order.id}
+            ingredients={order.ingredients}
+            price={order.price}
+          />
+        ))
+      )}
     </div>
   );
 };

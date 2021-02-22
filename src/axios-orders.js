@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
+import { firebaseDBUrl } from "./routes/routes.external";
 
 const instance = axios.create({
-    baseURL: 'https://react-burger-app-da7f2.firebaseio.com/'
-})
+  baseURL: firebaseDBUrl,
+});
 
 export default instance;
