@@ -1,6 +1,7 @@
 .Content {
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - 72px);
-    margin-top: 72px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 72px);
+  margin-top: 72px;
+  overflow: hidden;
 }

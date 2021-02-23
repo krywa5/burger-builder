@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import axios from "../../axios-orders";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import Order from "../../components/Order/Order";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import * as actions from "../../store/actions";
 
-const Orders = () => {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {}, []);
+const Orders = ({ onFetchOrders, orders, loading }) => {
+  useEffect(() => {
+    onFetchOrders();
+  }, []);
 
   return (
     <div>
@@ -27,4 +28,20 @@ const Orders = () => {
   );
 };
 
-export default withErrorHandler(Orders, axios);
+const mapStateToProsp = (state) => {
+  return {
+    orders: state.order.orders,
+    loading: state.order.loading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetchOrders: () => dispatch(actions.fetchOrders()),
+  };
+};
+
+export default connect(
+  mapStateToProsp,
+  mapDispatchToProps
+)(withErrorHandler(Orders, axios));

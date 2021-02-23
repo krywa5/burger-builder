@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "./ContactData/ContactData";
-import * as actions from "../../store/actions";
 
 const Checkout = ({ history, ings, match, onInitPurchase, purchased }) => {
   const checkoutCancelledHandler = () => {
@@ -24,10 +23,6 @@ const Checkout = ({ history, ings, match, onInitPurchase, purchased }) => {
   if (purchased) {
     return <Redirect to="/" />;
   }
-
-  useEffect(() => {
-    // onInitPurchase();
-  }, []);
 
   return (
     <div>
