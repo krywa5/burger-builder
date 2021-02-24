@@ -38,6 +38,7 @@ const initControls = {
 
 const Auth = ({ onAuth }) => {
   const [controls, setControls] = useState(initControls);
+  const [isSignUp, setIsSignUp] = useState(true);
 
   const checkValidity = (value, rules) => {
     let isValid = true;
@@ -112,7 +113,11 @@ const Auth = ({ onAuth }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    onAuth(controls.name.value, controls.password.value);
+    onAuth(controls.name.value, controls.password.value, isSignUp);
+  };
+
+  const onSignBtnHandler = () => {
+    setIsSignUp((prevVal) => !prevVal);
   };
 
   return (
@@ -121,13 +126,17 @@ const Auth = ({ onAuth }) => {
         {form}
         <Button btnType="Success">Submit</Button>
       </form>
+      <Button btnType="Danger" clicked={onSignBtnHandler}>
+        SWITCH TO {isSignUp ? "SIGN IN" : "SIGN UP"}
+      </Button>
     </div>
   );
 };
 
 const mapDispatchToPros = (dispatch) => {
   return {
-    onAuth: (email, password) => dispatch(actions.auth(email, password)),
+    onAuth: (email, password, isSignUp) =>
+      dispatch(actions.auth(email, password, isSignUp)),
   };
 };
 

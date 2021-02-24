@@ -21,18 +21,19 @@ export const authFail = (error) => {
   };
 };
 
-export const auth = (email, password) => {
+export const auth = (email, password, isSignUp) => {
   return (dispatch) => {
     dispatch(authStart());
+    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+    if (!isSignUp) {
+      url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+    }
     axios
-      .post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`,
-        {
-          email,
-          password,
-          returnSecureToken: true,
-        }
-      )
+      .post(url, {
+        email,
+        password,
+        returnSecureToken: true,
+      })
       .then((response) => {
         dispatch(authSuccess(response.data));
       })
