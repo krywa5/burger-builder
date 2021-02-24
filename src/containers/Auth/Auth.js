@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import classes from "./Auth.module.css";
+import * as actions from "../../store/actions";
 
 const initControls = {
   name: {
@@ -34,7 +36,7 @@ const initControls = {
   },
 };
 
-const Auth = () => {
+const Auth = ({ onAuth }) => {
   const [controls, setControls] = useState(initControls);
 
   const checkValidity = (value, rules) => {
@@ -108,9 +110,14 @@ const Auth = () => {
     />
   ));
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    onAuth(controls.name.value, controls.password.value);
+  };
+
   return (
     <div className={classes.Auth}>
-      <form>
+      <form onSubmit={submitHandler}>
         {form}
         <Button btnType="Success">Submit</Button>
       </form>
@@ -118,4 +125,10 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+const mapDispatchToPros = (dispatch) => {
+  return {
+    onAuth: (email, password) => dispatch(actions.auth(email, password)),
+  };
+};
+
+export default connect(null, mapDispatchToPros)(Auth);
