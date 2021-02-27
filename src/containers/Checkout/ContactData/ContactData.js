@@ -93,7 +93,14 @@ const initState = {
   },
 };
 
-const ContactData = ({ ings, price, onOrderedBurger, token, loading }) => {
+const ContactData = ({
+  ings,
+  price,
+  onOrderedBurger,
+  token,
+  loading,
+  userId,
+}) => {
   const [orderForm, setOrderForm] = useState(initState);
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -108,6 +115,7 @@ const ContactData = ({ ings, price, onOrderedBurger, token, loading }) => {
       ingredients: ings,
       price: price,
       orderData: formData,
+      userId: userId,
     };
 
     onOrderedBurger(order, token);
@@ -181,6 +189,7 @@ const mapStateToProps = (state) => {
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
     token: state.auth.token,
+    userId: state.auth.userId,
   };
 };
 

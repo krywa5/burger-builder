@@ -23,16 +23,19 @@ export const authFail = (error) => {
 };
 
 export const logout = () => {
+  localStorage.removeItem("bb_token");
+  localStorage.removeItem("bb_expirationDate");
+  localStorage.removeItem("bb_userId");
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
 };
 
-export const checkAuthTimeout = (expirationTime) => {
+export const checkAuthTimeout = (expirationDate) => {
   return (dispatch) => {
     setTimeout(() => {
       dispatch(logout());
-    }, expirationTime * 1000);
+    }, expirationDate * 1000);
   };
 };
 
@@ -51,6 +54,14 @@ export const auth = (email, password, isSignUp) => {
       })
       .then((response) => {
         const { idToken, localId, expiresIn } = response.data;
+        const expirationDate = new Date(
+          new Date().getTime() + expiresIn * 1000
+        );
+
+        localStorage.setItem("bb_token", idToken);
+        localStorage.setItem("bb_expirationDate", expirationDate);
+        localStorage.setItem("bb_userId", localId);
+
         dispatch(authSuccess(idToken, localId));
         dispatch(checkAuthTimeout(expiresIn));
       })
@@ -64,5 +75,30 @@ export const setAuthRedirectPath = (path) => {
   return {
     type: actionTypes.SET_AUTH_REDIRECT_PATH,
     path,
+  };
+};
+
+export const authCheckState = () => {
+  return (dispatch) => {
+    const token = localStorage.getItem("bb_token");
+
+    if (!token) {
+      dispatch(logout());
+    } else {
+      const expirationDate = new Date(
+        localStorage.getItem("bb_expirationDate")
+      );
+      if (expirationDate <= new Date()) {
+        dispatch(logout());
+      } else {
+        const userId = localStorage.getItem("bb_userId");
+        dispatch(authSuccess(token, userId));
+        dispatch(
+          checkAuthTimeout(
+            (expirationDate.getTime() - new Date().getTime()) / 1000
+          )
+        );
+      }
+    }
   };
 };
