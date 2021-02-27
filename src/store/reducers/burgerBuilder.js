@@ -5,6 +5,7 @@ const initialState = {
   ingredients: null,
   totalPrice: 4,
   error: false,
+  building: false,
 };
 
 // stałe które chcemy wykorzystać jako globalne, możemy pisać z dużych liter
@@ -23,6 +24,7 @@ const addIngredients = (state, action) => {
   const updatedState = {
     ingredients: updatedIngredients,
     totalPrice: state.totalPrice + INGREDIENTS_PRICES[action.ingredientName],
+    building: true,
   };
   return updateObject(state, updatedState);
 };
@@ -49,6 +51,7 @@ const setIngredients = (state, action) => {
     },
     totalPrice: initialState.totalPrice,
     error: false,
+    building: false,
   });
 };
 
