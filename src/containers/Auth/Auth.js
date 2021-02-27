@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
+import Spinner from "../../components/UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
 import * as actions from "../../store/actions";
+import { checkValidity } from "../../store/utility";
 
 const initControls = {
   name: {
@@ -36,40 +38,9 @@ const initControls = {
   },
 };
 
-const Auth = ({ onAuth }) => {
+const Auth = ({ onAuth, loading, error }) => {
   const [controls, setControls] = useState(initControls);
-  const [isSignUp, setIsSignUp] = useState(true);
-
-  const checkValidity = (value, rules) => {
-    let isValid = true;
-    if (!rules) {
-      return true;
-    }
-
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  };
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const inputChangeHandler = (event, controlName) => {
     event.preventDefault();
@@ -122,10 +93,19 @@ const Auth = ({ onAuth }) => {
 
   return (
     <div className={classes.Auth}>
-      <form onSubmit={submitHandler}>
-        {form}
-        <Button btnType="Success">Submit</Button>
-      </form>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <form onSubmit={submitHandler}>
+            {form}
+            <Button btnType="Success">Submit</Button>
+          </form>
+          {error && (
+            <p role="alert">{error.replaceAll("_", " ").toLowerCase()}</p>
+          )}
+        </>
+      )}
       <Button btnType="Danger" clicked={onSignBtnHandler}>
         SWITCH TO {isSignUp ? "SIGN IN" : "SIGN UP"}
       </Button>
@@ -133,11 +113,18 @@ const Auth = ({ onAuth }) => {
   );
 };
 
-const mapDispatchToPros = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, isSignUp) =>
       dispatch(actions.auth(email, password, isSignUp)),
   };
 };
 
-export default connect(null, mapDispatchToPros)(Auth);
+const mapStateToProps = (state) => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

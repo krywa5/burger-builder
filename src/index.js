@@ -10,6 +10,7 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import burgerBuilderReducer from "./store/reducers/burgerBuilder";
 import orderReducer from "./store/reducers/order";
+import authReducer from "./store/reducers/auth";
 
 const composeEnhancers = composeWithDevTools({
   // Specify here name, actionsBlacklist, actionsCreators and other options
@@ -18,6 +19,7 @@ const composeEnhancers = composeWithDevTools({
 const rootReducer = combineReducers({
   burgerBuilder: burgerBuilderReducer,
   order: orderReducer,
+  auth: authReducer,
 });
 
 const store = createStore(
