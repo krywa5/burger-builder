@@ -9,7 +9,7 @@ import classes from "./ContactData.module.css";
 import Input from "../../../components/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../../store/actions";
-import { checkValidity } from "../../../store/utility";
+import { checkValidity, updateObject } from "../../../shared/utility";
 
 const initState = {
   name: {
@@ -122,20 +122,15 @@ const ContactData = ({
   };
 
   const inputChangedHandler = (e, inputId) => {
-    const updatedOrderForm = {
-      ...orderForm,
-    };
     // Trzeba skopiować także obiekty, które znajdują się w obiekcie orderForm. Inaczej byłaby tylko referencja do tych obiektów. Należy zatem pamiętać, że kopiowanie elementów za pomocą operatora ... działa tylko na elementy proste
-    const updatedFormElement = {
-      ...updatedOrderForm[inputId],
-    };
-    updatedFormElement.value = e.target.value;
-    updatedFormElement.valid = checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
-    );
-    updatedFormElement.touched = true;
-    updatedOrderForm[inputId] = updatedFormElement;
+    const updatedFormElement = updateObject(orderForm[inputId], {
+      value: e.target.value,
+      valid: checkValidity(e.target.value, orderForm[inputId].validation),
+      touched: true,
+    });
+    const updatedOrderForm = updateObject(orderForm, {
+      [inputId]: updatedFormElement,
+    });
 
     let formIsValid = true;
     for (let inputId in updatedOrderForm) {
