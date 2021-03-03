@@ -17,6 +17,7 @@ const purchaseBurgerStart = (state) => {
 
 const purchaseBurgerSuccess = (state, action) => {
   const newOrder = updateObject(action.orderData, { id: action.orderId });
+
   return updateObject(state, {
     loading: false,
     purchased: true,
