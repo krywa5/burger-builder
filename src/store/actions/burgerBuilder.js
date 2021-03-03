@@ -1,4 +1,3 @@
-import axios from "../../axios-orders";
 import * as actionTypes from "./actionsTypes";
 
 // kreatory akcji zwracają całą akcje
@@ -30,14 +29,7 @@ export const fetchIngredientsFailed = () => {
 };
 
 export const initIngredients = () => {
-  return (dispatch) => {
-    axios
-      .get(`/ingredients.json`)
-      .then((response) => {
-        dispatch(setIngredients(response.data));
-      })
-      .catch(() => {
-        dispatch(fetchIngredientsFailed());
-      });
+  return {
+    type: actionTypes.FETCH_INGREDIENTS_INIT,
   };
 };
